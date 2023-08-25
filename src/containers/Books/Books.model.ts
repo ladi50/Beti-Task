@@ -13,7 +13,7 @@ export class BooksStore {
 
   @action async getBooks() {
     try {
-      const response = await this.httpGateway.get("/");
+      const response: Book[] | Error = await this.httpGateway.get("/");
 
       if (!Array.isArray(response)) throw Error();
 
@@ -23,9 +23,15 @@ export class BooksStore {
 
   @action async addBook(data: Book) {
     try {
-      const response = await this.httpGateway.post("/books", data);
+      const response: AddBookResponse[] | Error = await this.httpGateway.post(
+        "/",
+        data
+      );
 
-      console.log("added book ", response);
+      if ((response as AddBookResponse)?.status !== "ok") throw Error();
+
+      // Fetch updated books
+      await this.getBooks();
     } catch (err) {}
   }
 }

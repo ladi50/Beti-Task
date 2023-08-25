@@ -1,7 +1,13 @@
 import React from "react";
 
 const Book: React.FC<Book> = ({ author, name }) => {
-  return <div>Book</div>;
+  if (!author || !name) return <></>;
+
+  return (
+    <div>
+      {author}: {name}
+    </div>
+  );
 };
 
 export default Book;
