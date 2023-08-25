@@ -1,7 +1,7 @@
 import { action, makeAutoObservable, observable, runInAction } from "mobx";
-import { BooksType } from "screens/BooksScreen/BooksScreen.type";
 
 import ApiGateway from "shared/ApiGateway";
+import { BooksType } from "screens/BooksScreen/BooksScreen.type";
 
 export class BooksStore {
   constructor() {
@@ -16,14 +16,19 @@ export class BooksStore {
   @observable visibleList: Book[] = [];
   @observable selectedBookType: BooksType = BooksType.PUBLIC;
 
-  @action async getBooks() {
+  @action async getBooks(setInitialList = false) {
     try {
       const response: Book[] | Error = await this.httpGateway.get("/");
 
       if (!Array.isArray(response)) throw Error();
 
-      runInAction(() => {
+      runInAction(async () => {
         this.list = response;
+
+        if (setInitialList) {
+          // Set initial books list to render
+          await this.changeVisibleList(BooksType.PUBLIC);
+        }
       });
     } catch (err) {}
   }
@@ -34,10 +39,8 @@ export class BooksStore {
 
       if (!Array.isArray(response)) throw Error();
 
-      runInAction(async () => {
+      runInAction(() => {
         this.privateList = response;
-        // Set initial books list to render
-        await this.changeVisibleList(BooksType.PUBLIC);
       });
     } catch (err) {}
   }
@@ -54,6 +57,9 @@ export class BooksStore {
       // Fetch updated books
       await this.getBooks();
       await this.getPrivateBooks();
+
+      // Set selected list to show updated book list
+      await this.changeVisibleList(this.selectedBookType);
     } catch (err) {}
   }
 

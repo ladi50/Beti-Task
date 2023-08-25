@@ -11,7 +11,7 @@ export const useBooksScreen = () => {
 
   // Fetch books on mount
   useEffect(() => {
-    booksStore.getBooks();
+    booksStore.getBooks(true);
     booksStore.getPrivateBooks();
   }, []);
 
@@ -31,6 +31,12 @@ export const useBooksScreen = () => {
 
   const handleAddBookClick = async () => {
     await booksStore.addBook(values);
+
+    // Reset inputs values
+    setValues({
+      name: "",
+      author: ""
+    });
   };
 
   const handleBookTypeClick = async (type: BooksType) => {
