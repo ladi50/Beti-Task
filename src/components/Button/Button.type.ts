@@ -8,5 +8,6 @@ declare global {
     type?: "button" | "submit";
     onClick: (e: MouseEvent<HTMLButtonElement>) => void;
     disabled?: boolean;
+    className?: string;
   }
 }

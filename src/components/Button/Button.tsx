@@ -4,10 +4,16 @@ const Button: React.FC<Button> = ({
   onClick,
   type = "button",
   title,
-  disabled = false
+  disabled = false,
+  className = ""
 }) => {
   return (
-    <button type={type} onClick={onClick} disabled={disabled}>
+    <button
+      className={className}
+      type={type}
+      onClick={onClick}
+      disabled={disabled}
+    >
       {title}
     </button>
   );

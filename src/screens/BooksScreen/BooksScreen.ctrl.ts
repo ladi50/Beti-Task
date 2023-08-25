@@ -1,5 +1,6 @@
-import { FormEvent, useMemo, useState } from "react";
+import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
 
+import { BooksType } from "./BooksScreen.type";
 import booksStore from "containers/Books/Books.model";
 
 export const useBooksScreen = () => {
@@ -7,6 +8,12 @@ export const useBooksScreen = () => {
     name: "",
     author: ""
   });
+
+  // Fetch books on mount
+  useEffect(() => {
+    booksStore.getBooks();
+    booksStore.getPrivateBooks();
+  }, []);
 
   const isButtonDisabled = useMemo(
     () => !values.name || !values.author,
@@ -26,5 +33,26 @@ export const useBooksScreen = () => {
     await booksStore.addBook(values);
   };
 
-  return { handleAddBookClick, values, handleInputChange, isButtonDisabled };
+  const handleBookTypeClick = async (type: BooksType) => {
+    booksStore.changeVisibleList(type);
+  };
+
+  const getButtonClassName = useCallback((type: BooksType) => {
+    let value = "booksScreen__button";
+
+    if (type === booksStore.selectedBookType) {
+      value += " booksScreen__selectedButton";
+    }
+
+    return value;
+  }, []);
+
+  return {
+    handleAddBookClick,
+    values,
+    handleInputChange,
+    isButtonDisabled,
+    handleBookTypeClick,
+    getButtonClassName
+  };
 };

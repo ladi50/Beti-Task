@@ -2,6 +2,6 @@ export {};
 
 declare global {
   interface AddBookResponse {
-    status?: "ok";
+    status?: "ok" | "failure";
   }
 }

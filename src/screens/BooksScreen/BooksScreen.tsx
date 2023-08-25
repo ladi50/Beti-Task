@@ -1,17 +1,41 @@
 import React from "react";
 
+import { BooksType } from "./BooksScreen.type";
 import { useBooksScreen } from "./BooksScreen.ctrl";
 
 import Books from "containers/Books/Books";
 import Input from "components/Input/Input";
 import Button from "components/Button/Button";
 
+import "./BooksScreen.scss";
+
 const BooksScreen = () => {
-  const { handleAddBookClick, values, handleInputChange, isButtonDisabled } =
-    useBooksScreen();
+  const {
+    handleAddBookClick,
+    values,
+    handleInputChange,
+    isButtonDisabled,
+    handleBookTypeClick,
+    getButtonClassName
+  } = useBooksScreen();
 
   return (
     <div>
+      {/* Buttons to switch between public and private books */}
+      <Button
+        className={getButtonClassName(BooksType.PUBLIC)}
+        type="button"
+        title="Public Books"
+        onClick={() => handleBookTypeClick(BooksType.PUBLIC)}
+      />
+
+      <Button
+        className={getButtonClassName(BooksType.PRIVATE)}
+        type="button"
+        title="Private Books"
+        onClick={() => handleBookTypeClick(BooksType.PRIVATE)}
+      />
+
       <Books />
 
       <Input
