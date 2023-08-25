@@ -1,3 +1,4 @@
+import { observer } from "mobx-react";
 import React from "react";
 
 const Book: React.FC<Book> = ({ author, name }) => {
@@ -10,4 +11,4 @@ const Book: React.FC<Book> = ({ author, name }) => {
   );
 };
 
-export default Book;
+export default observer(Book);

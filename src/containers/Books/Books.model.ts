@@ -1,10 +1,11 @@
-import { action, observable, runInAction } from "mobx";
+import { action, makeAutoObservable, observable, runInAction } from "mobx";
 import { BooksType } from "screens/BooksScreen/BooksScreen.type";
 
 import ApiGateway from "shared/ApiGateway";
 
 export class BooksStore {
   constructor() {
+    makeAutoObservable(this);
     this.httpGateway = new ApiGateway();
   }
 
@@ -12,7 +13,7 @@ export class BooksStore {
 
   @observable list: Book[] = [];
   @observable privateList: Book[] = [];
-  @observable visibleList: Book[] = this.list;
+  @observable visibleList: Book[] = [];
   @observable selectedBookType: BooksType = BooksType.PUBLIC;
 
   @action async getBooks() {
@@ -33,8 +34,10 @@ export class BooksStore {
 
       if (!Array.isArray(response)) throw Error();
 
-      runInAction(() => {
+      runInAction(async () => {
         this.privateList = response;
+        // Set initial books list to render
+        await this.changeVisibleList(BooksType.PUBLIC);
       });
     } catch (err) {}
   }

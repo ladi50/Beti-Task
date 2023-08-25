@@ -8,6 +8,7 @@ import Input from "components/Input/Input";
 import Button from "components/Button/Button";
 
 import "./BooksScreen.scss";
+import { observer } from "mobx-react";
 
 const BooksScreen = () => {
   const {
@@ -64,4 +65,4 @@ const BooksScreen = () => {
   );
 };
 
-export default BooksScreen;
+export default observer(BooksScreen);

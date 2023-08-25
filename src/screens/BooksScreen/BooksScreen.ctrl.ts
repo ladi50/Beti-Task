@@ -37,15 +37,19 @@ export const useBooksScreen = () => {
     booksStore.changeVisibleList(type);
   };
 
-  const getButtonClassName = useCallback((type: BooksType) => {
-    let value = "booksScreen__button";
+  const getButtonClassName = useCallback(
+    (type: BooksType) => {
+      let value = "booksScreen__button";
 
-    if (type === booksStore.selectedBookType) {
-      value += " booksScreen__selectedButton";
-    }
+      if (type === booksStore.selectedBookType) {
+        value += " booksScreen__selectedButton";
+      }
 
-    return value;
-  }, []);
+      return value;
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [booksStore.selectedBookType]
+  );
 
   return {
     handleAddBookClick,
